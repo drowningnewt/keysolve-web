@@ -251,5 +251,14 @@ function quadgrams(key, gram) {
         console.log(gram)
     }
 
+    if (
+        new Set(key.map(x => hand(x))).size == 1 &&
+        new Set(key.map(x => finger(x))).size == 4 &&
+        !ordered(key)
+    ) {
+        buckets.push('RD')
+        console.log(gram)
+    }
+
     return buckets
 }

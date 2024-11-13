@@ -22,6 +22,8 @@ By clicking the button with the gear icon, you can see the layout in text form. 
 
 ## Metric Classes
 
+Hand patterns will be specified using the letters a and b where a is any hand and b is the alternating hand.
+
 **Bigrams**  
 A bigram is a pattern of two letters that occur next to each other. All bigram metrics have the letter `B` at the end of their abbreviation. 
 - The word `the` has two bigrams: `th` and `he`.
@@ -33,6 +35,10 @@ A skipgram is a pattern of two letters that are separated by any other letter. A
 **Trigrams**  
 A trigram is a pattern of three letters that occur next to each other. 
 - The word `the` has only one trigram: `the`.
+
+**Quadgrams**
+A quadgram is a pattern of four letters that occur next to each other. 
+- The word `just` has only one quadgram: `just`
 
 ## Bigram Types
 
@@ -55,15 +61,49 @@ A full-scissor is a pattern where one finger needs to reach to the top row and a
 ## Trigram Types
 
 **ALT (Alternation)**  
-An alternation sequence is when hand use alternates over three consecutive keypresses - either Left-Right-Left or Right-Left-Right.
+An alternation sequence is when hand use alternates over three consecutive keypresses - aba.
 
 **ROL (Roll)**  
-A roll is when one hand presses two keys consecutively and is followed or preceded by a keypress on the other hand - either Left-Left-Right, Left-Right-Right, Right-Left-Left, or Right-Right-Left.
+A roll is when one hand presses two keys consecutively and is followed or preceded by a keypress on the other hand - either aab or abb.
 
 **ONE (Onehand)**  
-A onehand is when all three keypresses are pressed on the same hand, and in an order from left to right or right to left.
+A onehand is when all three keypresses are pressed on the same hand, and in an order from left to right or right to left - aaa.
 - `asd`, `sdf`, and `fds` are all onehands on QWERTY.
 
 **RED (Redirect)**  
-A redirect is when all three keypresses are pressed on the same hand but don't occur in a smooth order.
+A redirect is when all three keypresses are pressed on the same hand but don't occur in a smooth order - aaa.
 - `sea`, `sca`, and `rse` are all redirects on QWERTY.
+
+## Quadgram Types
+
+**CAQ (Non-SFS Chained Alternation)**
+An alternation sequence combined with another alternation sequence where a hand alternates over four cosecutive keypresses. All keypresses must have unique fingers - abab.
+- `with`, `othe`, and `make` are valid patterns on QWERTY.
+
+**SAQ (Total Chained Alternation)**
+Chained alternation but without CAQ's requirement of unique fingers.
+- `than`, `ight`, and `when` are valid patterns on QWERTY.
+
+**CRQ (Chained Roll)**
+A roll pattern followed by another roll pattern (roll start + roll end / aab + abb) - aabb.
+- `atio`, `life`, and `ings` are valid patterns on QWERTY.
+
+**BTQ (Bidirectional/Non-SFS True Rolls)**
+A pattern where a key is pressed on one hand, a roll is done on the other, and then returning back to the initial hand (roll end + roll start / abb + bba). The pattern a__a must not be an SFS - abba.
+- `some`, `this`, and `time` are valid patterns on QWERTY.
+
+**TRQ (Total True Rolls)**
+True rolls without BTQ's restriction of a__a not being an SFS.
+- `ting`, `come`, and `bout` are valid patterns on QWERTY.
+
+**4RQ (4roll)**
+A 4roll is when all four keypresses are pressed on the same hand, and in an order from left to right or right to left - aaaa.
+- `poin`, `plin`, and `rewa` are valid patterns on QWERTY.
+
+**RDQ (4red)**
+A 4red is when all four keypresses are pressed on the same hand but don't occur in a smooth order - aaaa.
+- `you'`, `hink`, and `reat` are valid patterns on QWERTY.
+
+## Color buckets are broken for the following stats:
+- SAQ
+- RDQ
