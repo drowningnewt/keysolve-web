@@ -19,6 +19,13 @@ window.onload = async function() {
     board.stagger()
 
     base = await (await fetch('percentiles.json')).json()
+
+    // Bandaid fix to disable Firefox's quick find shortcut
+    document.addEventListener('keydown', function(event) {
+        if (event.key === "'" && document.activeElement !== document.getElementById('search')) {
+            event.preventDefault();
+        }
+    });
 }
 
 window.info = function() {

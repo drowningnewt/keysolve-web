@@ -6,6 +6,15 @@ export function init() {
     const input = document.getElementById('search')
     input.addEventListener("input", change)
     input.addEventListener("focusout", unfocus)
+
+    // Add listener for Ctrl+F / Cmd+F to use custom search
+    document.addEventListener('keydown', function(event) {
+        if ((event.ctrlKey || event.metaKey) && event.key === 'f') {
+            event.preventDefault();
+            input.focus();
+            input.select();
+        }
+    });
 }
 
 function unfocus() {
