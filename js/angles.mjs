@@ -2,6 +2,8 @@ export const ANGLES = [
     "maya",
     "lela",
     "dina",
+    "blaze",
+    "nerbs",
     "putih",
     "rollla",
     "canary",
