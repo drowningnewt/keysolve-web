@@ -1,3 +1,5 @@
+import * as board from './board.mjs'
+
 export const STANDARD = [
     0, 1, 2, 3, 3, 6, 6, 7, 8, 9,
     0, 1, 2, 3, 3, 6, 6, 7, 8, 9,
@@ -20,8 +22,6 @@ export function angle(bool) {
     } else {
         FINGER_MAP = STANDARD
     }
-
-    console.log(`angle: ${bool}`)
 }
 
 function finger(idx) {
@@ -53,25 +53,63 @@ function row(idx) {
 }
 
 function ordered(idx) {
-    return (
-        (
-            finger(idx[0]) < finger(idx[1]) &&
-            finger(idx[1]) < finger(idx[2])
-        ) ||
-        (
-            finger(idx[0]) > finger(idx[1]) &&
-            finger(idx[1]) > finger(idx[2])
-        )
-    )
+    if (idx.length < 2) return true; // Arrays with less than 2 elements are trivially ordered
+
+    let isIncreasing = true;
+    let isDecreasing = true;
+
+    for (let i = 1; i < idx.length; i++) {
+        const current = finger(idx[i]);
+        const previous = finger(idx[i - 1]);
+
+        if (current < previous) {
+            isIncreasing = false;
+        }
+        if (current > previous) {
+            isDecreasing = false;
+        }
+    }
+
+    return isIncreasing || isDecreasing;
 }
 
-export function classify(key) {
+
+export function classify(key, gram) {
     switch(key.length) {
         case 2:
             return bigrams(key)
         case 3:
             return trigrams(key)
+        case 4:
+            return quadgrams(key, gram)
     }
+}
+
+function X(c, r) {
+    let sx = c
+    console.log(board.board)
+    if (board.board === 'stagger') {
+        if (r == 0) {
+            sx = c - 0.25
+        } else if (r == 2) {
+            sx = c + 0.5
+        } else {
+            sx = c
+        }
+    }
+	return sx
+}
+
+function twoKeyDist(k1, k2) {
+    ax = X(column(k1), row(k1))
+    bx = X(column(k2), row(k2))
+    ay = row(k1)
+    by = row(k2)
+
+    x = ax - bx
+    y = ay - by
+
+    return Math.sqrt((x * x) + (y * y))
 }
 
 function bigrams(key) {
@@ -86,15 +124,9 @@ function bigrams(key) {
     }
     
     if (
-        hand(key[0]) == hand(key[1]) &&
-        (
-            [4, 5].includes(column(key[0])) ||
-            [4, 5].includes(column(key[1]))
-        ) &&
-        (
-            [2, 7].includes(column(key[0])) ||
-            [2, 7].includes(column(key[1]))
-        )
+        hand(key[0]) == hand(key[1]) && 
+        Math.abs(finger(key[0]) - finger(key[1])) == 1 &&
+        Math.abs(X(column(key[0]), row(key[0])) - X(column(key[1]), row(key[1]))) >= 2
     ) {
         buckets.push('LS')
     }
@@ -152,6 +184,7 @@ function trigrams(key) {
 
     if (
         new Set(key.map(x => hand(x))).size == 1 &&
+        new Set(key.map(x => finger(x))).size == 3 &&
         ordered(key)
     ) {
         buckets.push('ONE')
@@ -159,10 +192,63 @@ function trigrams(key) {
 
     if (
         new Set(key.map(x => hand(x))).size == 1 &&
-        new Set(key.map(x => finger(x))).size == 3 &&
+        finger(key[0]) != finger(key[1]) &&
+        finger(key[1]) != finger(key[2]) &&
         !ordered(key)
     ) {
         buckets.push('RED')
+    }
+
+    return buckets
+}
+
+function quadgrams(key, gram) {
+    const buckets = []
+
+    if (
+        hand(key[0]) == hand(key[2]) &&
+        hand(key[1]) == hand(key[3]) &&
+        hand(key[0]) != hand(key[1])
+    ) {
+        if (new Set(key.map(x => finger(x))).size == 4) {
+            buckets.push('CA')
+            buckets.push('SA')
+        } else {
+            console.log(gram)
+            buckets.push('SA')
+        }
+    }
+
+    if (
+        new Set(key.map(x => hand(x))).size == 2 &&
+        new Set(key.map(x => finger(x))).size == 4 &&
+        hand(key[0]) == hand(key[1]) &&
+        hand(key[1]) != hand(key[2]) &&
+        hand(key[2]) == hand(key[3])
+    ) {
+        buckets.push('CR')
+    }
+
+    if (
+        new Set(key.map(x => hand(x))).size == 2 &&
+        hand(key[0]) != hand(key[1]) && 
+        hand(key[1]) == hand(key[2]) && 
+        hand(key[2]) != hand(key[3]) &&
+        finger(key[1]) != finger(key[2])
+    ) {
+        buckets.push('TR')
+        if (new Set(key.map(x => finger(x))).size == 4) {
+            buckets.push('BT')
+        }
+    }
+
+    if (
+        new Set(key.map(x => hand(x))).size == 1 &&
+        new Set(key.map(x => finger(x))).size == 4 &&
+        ordered(key)
+    ) {
+        buckets.push('4R')
+        console.log(gram)
     }
 
     return buckets

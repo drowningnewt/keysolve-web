@@ -7,12 +7,14 @@ let MONOGRAMS = null
 let BIGRAMS = null
 let SKIPGRAMS = null
 let TRIGRAMS = null
+let QUADGRAMS = null
 
 export async function init() {
     MONOGRAMS = await (await fetch('corpora/monograms.json')).json()
     BIGRAMS = await (await fetch('corpora/bigrams.json')).json()
     SKIPGRAMS = await (await fetch('corpora/skipgrams.json')).json()
     TRIGRAMS = await (await fetch('corpora/trigrams.json')).json()
+    QUADGRAMS = await (await fetch('corpora/tetragrams.json')).json()
 }
 
 export function analyze() {
@@ -24,7 +26,7 @@ export function analyze() {
     }
 
     const res = {}
-    for (const suffix of ['B', 'S', '']) {
+    for (const suffix of ['B', 'S', 'Q', '']) {
         let grams
 
         switch (suffix) {
@@ -33,6 +35,9 @@ export function analyze() {
                 break
             case 'S':
                 grams = SKIPGRAMS
+                break
+            case 'Q':
+                grams = QUADGRAMS
                 break
             default:
                 grams = TRIGRAMS
@@ -43,14 +48,15 @@ export function analyze() {
         let total = 0
 
         for (const [gram, count] of Object.entries(grams)) {
-            const key = [...gram].map(x => layout[x])
+            const lower = gram.toLowerCase()
+            const key = [...lower].map(x => layout[x])
             total += count
             
             if (key.indexOf(undefined) !== -1) {
                 continue
             }
             
-            const stats = classify(key)
+            const stats = classify(key, lower)
 
             for (let stat of stats) {
                 stat = stat + suffix
@@ -87,5 +93,6 @@ export function analyze() {
     res['LH'] = ['LI', 'LM', 'LR', 'LP', 'LT'].reduce((sum, x) => sum + (res[x] ?? 0), 0)
     res['RH'] = ['RI', 'RM', 'RR', 'RP', 'RT'].reduce((sum, x) => sum + (res[x] ?? 0), 0)
 
+    console.log(res);
     return res
 }
