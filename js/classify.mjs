@@ -214,7 +214,6 @@ function quadgrams(key, gram) {
             buckets.push('CA')
             buckets.push('SA')
         } else {
-            console.log(gram)
             buckets.push('SA')
         }
     }
@@ -248,12 +247,13 @@ function quadgrams(key, gram) {
         ordered(key)
     ) {
         buckets.push('4R')
-        console.log(gram)
     }
 
     if (
         new Set(key.map(x => hand(x))).size == 1 &&
-        new Set(key.map(x => finger(x))).size == 4 &&
+        finger(key[0]) != finger(key[1]) &&
+        finger(key[1]) != finger(key[2]) &&
+        finger(key[2]) != finger(key[3]) &&
         !ordered(key)
     ) {
         buckets.push('RD')

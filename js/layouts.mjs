@@ -5,6 +5,7 @@ export const LAYOUTS = {
     "isrt": "yclmkzfu,'isrtgpneaoqvwdjbh/.x",
     "nstd": "bfmcpzlou,nstdyjraeiqvkgwxh';.",
     "lela": "ylwkjzfou.crstvbnaeixmgdqph'/,",
+    "jinx": "gourj'fdl,caenvyhtsibq;mzkpwx.",
     "heart": "qcdvkjyou;rsthlpnaiewgbmxzf,./",
     "dwarf": "flhdvzgou.srntmpyeiaxjbkqcw',;",
     "ctgap": "qplcjxfou/rntsgyheiazbmwvkd',.",

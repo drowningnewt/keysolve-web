@@ -103,7 +103,3 @@ A 4roll is when all four keypresses are pressed on the same hand, and in an orde
 **RDQ (4red)**
 A 4red is when all four keypresses are pressed on the same hand but don't occur in a smooth order - aaaa.
 - `you'`, `hink`, and `reat` are valid patterns on QWERTY.
-
-## Color buckets are broken for the following stats:
-- SAQ
-- RDQ
