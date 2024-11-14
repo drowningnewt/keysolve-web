@@ -68,13 +68,13 @@ export function stagger() {
     for (let i=0; i < keys.length; i++) {
         let style = ''
         if (i < 10) {
-            style = 'calc(var(--size) * -3)'
+            style = '-30%'
         } else if (i < 20) {
-            style = 'calc(var(--size) * -1)'
+            style = '-10%'
         } else if (i < 30) {
-            style = 'calc(var(--size) * 3)'
+            style =  '30%'
         } else {
-            style = 'calc(var(--size) * -1)'
+            style = '-10%'
         }
         
         keys[i].style.marginLeft = style
