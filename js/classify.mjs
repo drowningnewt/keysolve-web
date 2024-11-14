@@ -257,7 +257,6 @@ function quadgrams(key, gram) {
         !ordered(key)
     ) {
         buckets.push('RD')
-        console.log(gram)
     }
 
     return buckets

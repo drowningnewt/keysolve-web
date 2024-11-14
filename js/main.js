@@ -141,6 +141,9 @@ window.board = function() {
             board.ortho()
             break
         case 'ortho':
+            board.colstag()
+            break
+        case 'colstag':
             board.stagger()
             break
         }

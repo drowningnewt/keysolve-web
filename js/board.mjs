@@ -2,7 +2,7 @@ import * as drag from './drag.mjs'
 import * as disable from './disable.mjs'
 import * as classify from './classify.mjs'
 
-export let board = 'stagger'
+export let board = 'colstag'
 export let angle = false
 
 export function set_angle(bool) {
@@ -78,6 +78,7 @@ export function stagger() {
         }
         
         keys[i].style.marginLeft = style
+        keys[i].style.marginTop = ''
     }
 
     board = 'stagger'
@@ -88,8 +89,44 @@ export function ortho() {
     const keys = grid.children
 
     for (let i=0; i < keys.length; i++) {
-        keys[i].style.marginLeft = '0'
+        keys[i].style.marginLeft = ''
+        keys[i].style.marginTop = ''
     }
 
     board = 'ortho'
+}
+
+export function colstag() {
+    const grid = document.getElementById('grid')
+    const keys = grid.children
+
+    for (let i=0; i < keys.length; i++) {
+        let style = ''
+
+        switch (i % 10) {
+            case 0:
+            case 9:
+                style = '0%';
+                break;
+            case 1:
+            case 3:
+            case 6:
+            case 8:
+                style = '-25%';
+                break;
+            case 2:
+            case 7:
+                style = '-50%';
+                break;
+            case 4:
+            case 5:
+                style = '-20%';
+                break;
+        }     
+        
+        keys[i].style.marginLeft = '0'
+        keys[i].style.marginTop = style
+    }
+
+    board = 'colstag'
 }
