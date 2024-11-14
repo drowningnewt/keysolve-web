@@ -149,6 +149,10 @@ window.board = function() {
         }
 
     window.stats()
+
+    const button = document.getElementById('boardButton')
+    const fmtBoard = board.board.charAt(0).toUpperCase() + board.board.slice(1)
+    button.innerHTML = '<i class="fa-solid fa-keyboard"></i> ' + fmtBoard
 }
 
 window.heatmap = function() {

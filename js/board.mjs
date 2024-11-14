@@ -2,7 +2,7 @@ import * as drag from './drag.mjs'
 import * as disable from './disable.mjs'
 import * as classify from './classify.mjs'
 
-export let board = 'colstag'
+export let board = 'stagger'
 export let angle = false
 
 export function set_angle(bool) {
@@ -106,23 +106,23 @@ export function colstag() {
         switch (i % 10) {
             case 0:
             case 9:
-                style = '0%';
-                break;
+                style = '0%'
+                break
             case 1:
             case 3:
             case 6:
             case 8:
-                style = '-25%';
-                break;
+                style = '-25%'
+                break
             case 2:
             case 7:
-                style = '-50%';
-                break;
+                style = '-50%'
+                break
             case 4:
             case 5:
-                style = '-20%';
-                break;
-        }     
+                style = '-20%'
+                break
+        }
         
         keys[i].style.marginLeft = '0'
         keys[i].style.marginTop = style

@@ -14,7 +14,7 @@ export function init() {
             input.focus();
             input.select();
         }
-    });
+    })
 }
 
 function unfocus() {
