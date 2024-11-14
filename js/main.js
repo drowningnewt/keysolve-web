@@ -33,28 +33,11 @@ window.info = function() {
     window.open(url, '_blank')
 }
 
-window.temp = function() {
-    const samerow = document.getElementById('samerow')
-    const ngrams = document.getElementById('ngrams')
-    const use = document.getElementById('use')
-
-    use.setAttribute('hidden', 'true')
-    if (samerow.hasAttribute('hidden')) {
-        samerow.removeAttribute('hidden')
-        ngrams.setAttribute('hidden', 'true')
-    } else {
-        samerow.setAttribute('hidden', 'true')
-        ngrams.removeAttribute('hidden')
-    }
-}
-
 window.toggle = function() {
     const ngrams = document.getElementById('ngrams')
-    const samerow = document.getElementById('samerow')
     const use = document.getElementById('use')
     const button = document.getElementById('statsButton')
 
-    samerow.setAttribute('hidden', 'true')
     if (use.hasAttribute('hidden')) {
         use.removeAttribute('hidden')
         ngrams.setAttribute('hidden', 'true')
