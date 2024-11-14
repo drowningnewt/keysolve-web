@@ -33,20 +33,40 @@ window.info = function() {
     window.open(url, '_blank')
 }
 
-window.toggle = function() {
+window.temp = function() {
+    const samerow = document.getElementById('samerow')
     const ngrams = document.getElementById('ngrams')
     const use = document.getElementById('use')
 
-    if (ngrams.hasAttribute('hidden')) {
-        ngrams.removeAttribute('hidden')
-    } else {
+    use.setAttribute('hidden', 'true')
+    if (samerow.hasAttribute('hidden')) {
+        samerow.removeAttribute('hidden')
         ngrams.setAttribute('hidden', 'true')
+    } else {
+        samerow.setAttribute('hidden', 'true')
+        ngrams.removeAttribute('hidden')
+    }
+}
+
+window.toggle = function() {
+    const ngrams = document.getElementById('ngrams')
+    const samerow = document.getElementById('samerow')
+    const use = document.getElementById('use')
+    const button = document.getElementById('statsButton')
+
+    samerow.setAttribute('hidden', 'true')
+    if (use.hasAttribute('hidden')) {
+        use.removeAttribute('hidden')
+        ngrams.setAttribute('hidden', 'true')
+    } else {
+        use.setAttribute('hidden', 'true')
+        ngrams.removeAttribute('hidden')
     }
 
     if (use.hasAttribute('hidden')) {
-        use.removeAttribute('hidden')
+        button.innerHTML = '<i class="fa-solid fa-chart-simple"></i> Stats'
     } else {
-        use.setAttribute('hidden', 'true')
+        button.innerHTML = '<i class="fa-solid fa-chart-simple"></i> Usage'
     }
 }
 
@@ -141,6 +161,8 @@ window.board = function() {
             board.stagger()
             break
         }
+
+    window.stats()
 }
 
 window.heatmap = function() {
