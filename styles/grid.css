@@ -1,5 +1,5 @@
 :root {
-    --rows: 3; 
+    --rows: 3;
     --cols: 10;
     --pad: calc((100vw - 125vh) / 2);
 }
@@ -19,14 +19,14 @@
     width: 100%;
     border-radius: 10%;
     aspect-ratio: 1;
-    
+
     background: var(--color-5);
     font-size: calc(var(--size) * 3);
 
     box-shadow: calc(var(--size) / 5) calc(var(--size) / 5) var(--color-shadow);
     user-select: none;
 
-    transition: 
+    transition:
         background-color 200ms,
         filter 100ms;
 }

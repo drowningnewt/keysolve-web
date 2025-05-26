@@ -1,6 +1,6 @@
 td {
     text-align: center;
-    
+
     background: var(--color-5);
     font-size: calc(var(--size) * 2);
 }
@@ -8,6 +8,6 @@ td {
 table {
     width: 98%;
     margin: calc(var(--size) * 1);
-    
+
     user-select: none;
 }

@@ -3,10 +3,10 @@
 @import 'search.css';
 @import 'table.css';
 
-* { 
-    -moz-box-sizing: border-box; 
-    -webkit-box-sizing: border-box; 
-    box-sizing: border-box; 
+* {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
 
     font-family: "Fira Code", monospace;
     color: var(--color-text);
@@ -16,14 +16,14 @@
     --color-box: rgb(62, 62, 62);
     --color-bg: rgb(39, 39, 39);
     --color-light: rgb(232, 232, 232);
-    
+
     --size: min(1vw, 1.25vh);
 }
 
 body {
     height: 100vh;
     margin: 0;
-    
+
     color: var(--color-text);
     background: var(--color-bg);
 }
@@ -73,7 +73,7 @@ body {
 
 .center {
     display: flex;
-    
+
     align-items: center;
     justify-content: center;
 }
@@ -120,14 +120,14 @@ textarea {
 #editor {
     position: absolute;
     top: 0;
-    
+
     border: none;
     aspect-ratio: 1;
-    
+
     background: none;
     font-size: calc(var(--size) * 3);
     text-align: center;
-    
+
     outline: none;
 }
 

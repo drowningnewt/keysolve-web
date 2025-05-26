@@ -75,7 +75,7 @@ window.stats = function() {
 
         cell.innerHTML = `${stat}: ${perc}`
         cell.style.background = color
-    } 
+    }
 }
 
 window.mirror = function() {
@@ -151,8 +151,51 @@ window.board = function() {
     window.stats()
 
     const button = document.getElementById('boardButton')
-    const fmtBoard = board.board.charAt(0).toUpperCase() + board.board.slice(1)
-    button.innerHTML = '<i class="fa-solid fa-keyboard"></i> ' + fmtBoard
+    const fmtValue = board.board.charAt(0).toUpperCase() + board.board.slice(1)
+    button.innerHTML = '<i class="fa-solid fa-keyboard"></i> ' + fmtValue
+}
+
+window.angle = function() {
+    switch (board.angle) {
+        case true:
+            board.set_angle(false)
+            break
+        case false:
+            board.set_angle(true)
+            break
+        }
+
+    window.stats()
+
+    const button = document.getElementById('angleButton')
+    const fmtValue = board.angle ? 'Angle' : 'Standard'
+    button.innerHTML = '<i class="fa-solid fa-hands"></i> ' + fmtValue
+}
+
+window.rowCondition = function() {
+    switch (board.fingerCondition) {
+        case 'None':
+            board.set_finger_condition('SR')
+            break
+        case 'SR':
+            board.set_finger_condition('SRAF')
+            break
+        case 'SRAF':
+            board.set_finger_condition('None')
+            break
+        }
+
+    window.stats()
+
+    const button = document.getElementById('rowConditionButton')
+    const iconMap = {
+        'None': '<i class="fa-solid fa-x"></i> ',
+        'SR': '<i class="fa-solid fa-grip-lines"></i> ',
+        'SRAF': '<i class="fa-solid fa-plus"></i> '
+    };
+    const fmtIcon = iconMap[board.fingerCondition] || '';
+    const fmtValue = board.fingerCondition === 'None' ? 'No SRAF' : board.fingerCondition
+    button.innerHTML = fmtIcon + fmtValue
 }
 
 window.heatmap = function() {

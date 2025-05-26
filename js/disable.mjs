@@ -19,6 +19,6 @@ function disable(event) {
     } else {
         key.classList.add("excluded")
     }
-    
+
     window.stats()
 }

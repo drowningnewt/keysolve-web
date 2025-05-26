@@ -27,7 +27,7 @@ function change() {
     if ('layouts' in localStorage) {
         stored = JSON.parse(localStorage.layouts)
     }
-    
+
     for (const name in stored) {
         LAYOUTS[name] = stored[name]
     }
@@ -36,7 +36,7 @@ function change() {
     const layout = input.value.toLowerCase()
 
     const complete = document.getElementById('complete')
-    
+
     let completion = ''
     for (const key in LAYOUTS) {
         if (layout === '') {
@@ -52,10 +52,10 @@ function change() {
             break
         }
     }
-    
+
     complete.innerHTML = (
-        ' '.repeat(completion.length) + 
-        ' '.repeat(input.value.length) + 
+        ' '.repeat(completion.length) +
+        ' '.repeat(input.value.length) +
         completion
     )
 
@@ -70,4 +70,15 @@ function change() {
 
     board.set_angle(angle_bool)
     board.update(matrix)
+
+    // Bandaid fix since some settings reset on new layout
+    document.getElementById('angleButton').innerHTML = '<i class="fa-solid fa-hands"></i> ' + (board.angle ? 'Angle' : 'Standard')
+
+    board.set_finger_condition(board.fingerCondition)
+    const iconMap = {
+        'None': '<i class="fa-solid fa-x"></i> ',
+        'SR': '<i class="fa-solid fa-grip-lines"></i> ',
+        'SRAF': '<i class="fa-solid fa-plus"></i> '
+    };
+    document.getElementById('rowConditionButton').innerHTML = iconMap[board.fingerCondition] + (board.fingerCondition === 'None' ? 'No SRAF' : board.fingerCondition)
 }

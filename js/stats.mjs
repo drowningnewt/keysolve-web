@@ -51,12 +51,12 @@ export function analyze() {
             const lower = gram.toLowerCase()
             const key = [...lower].map(x => layout[x])
             total += count
-            
+
             if (key.indexOf(undefined) !== -1) {
                 continue
             }
-            
-            const stats = classify(key, lower)
+
+            const stats = classify(key)
 
             for (let stat of stats) {
                 stat = stat + suffix
@@ -93,6 +93,5 @@ export function analyze() {
     res['LH'] = ['LI', 'LM', 'LR', 'LP', 'LT'].reduce((sum, x) => sum + (res[x] ?? 0), 0)
     res['RH'] = ['RI', 'RM', 'RR', 'RP', 'RT'].reduce((sum, x) => sum + (res[x] ?? 0), 0)
 
-    console.log(res);
     return res
 }

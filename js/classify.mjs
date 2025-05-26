@@ -31,21 +31,15 @@ function finger(idx) {
 function column(idx) {
     if (idx >= 30) {
         return 0
-    } 
-    
+    }
     return idx % 10
 }
 
 function hand(idx) {
     if (idx >= 30) {
         return 1
-    } 
-
-    if (idx % 10 < 5) {
-        return 0
-    } else {
-        return 1
     }
+    return (idx % 10 < 5) ? 0 : 1
 }
 
 function row(idx) {
@@ -74,14 +68,14 @@ function ordered(idx) {
 }
 
 
-export function classify(key, gram) {
+export function classify(key) {
     switch(key.length) {
         case 2:
             return bigrams(key)
         case 3:
             return trigrams(key)
         case 4:
-            return quadgrams(key, gram)
+            return quadgrams(key)
     }
 }
 
@@ -122,9 +116,9 @@ function bigrams(key) {
         buckets.push('SF')
         return buckets
     }
-    
+
     if (
-        hand(key[0]) == hand(key[1]) && 
+        hand(key[0]) == hand(key[1]) &&
         Math.abs(finger(key[0]) - finger(key[1])) == 1 &&
         Math.abs(X(column(key[0]), row(key[0])) - X(column(key[1]), row(key[1]))) >= 2
     ) {
@@ -164,12 +158,53 @@ function bigrams(key) {
     return buckets
 }
 
+export let FINGER_CONDITION = false
+// Make this accept SR and SRAF
+export function fingerCondition(cond) {
+    FINGER_CONDITION = cond
+}
+
+function sameRow(...keys) {
+  for (let i = 0; i < keys.length - 1; i += 2) {
+    if (
+      hand(keys[i]) !== hand(keys[i + 1]) ||
+      row(keys[i]) !== row(keys[i + 1])
+    ) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function sameRowAdjacentFinger(...keys) {
+  for (let i = 0; i < keys.length - 1; i += 2) {
+    if (
+      hand(keys[i]) !== hand(keys[i + 1]) ||
+      row(keys[i]) !== row(keys[i + 1]) ||
+      Math.abs(finger(keys[i]) - finger(keys[i + 1])) !== 1
+    ) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function patternQuality(pattern, ...keys) {
+  if (pattern === 'SR') {
+    return sameRow(...keys);
+  } else if (pattern === 'SRAF') {
+    return sameRowAdjacentFinger(...keys);
+  }
+  return true;
+}
+
 function trigrams(key) {
     const buckets = []
 
     if (
         hand(key[0]) == hand(key[2]) &&
-        hand(key[0]) != hand(key[1])
+        hand(key[0]) != hand(key[1]) &&
+        patternQuality(FINGER_CONDITION, key[0], key[2])
     ) {
         buckets.push('ALT')
     }
@@ -177,15 +212,19 @@ function trigrams(key) {
     if (
         new Set(key.map(x => hand(x))).size == 2 &&
         new Set(key.map(x => finger(x))).size == 3 &&
-        hand(key[0]) != hand(key[2])
+        hand(key[0]) != hand(key[2]) &&
+        (patternQuality(FINGER_CONDITION, key[0], key[1]) || patternQuality(FINGER_CONDITION, key[1], key[2]))
     ) {
         buckets.push('ROL')
     }
 
+    console.log(FINGER_CONDITION, patternQuality(FINGER_CONDITION, key[0], key[1]), patternQuality(FINGER_CONDITION, key[1], key[2]))
+
     if (
         new Set(key.map(x => hand(x))).size == 1 &&
         new Set(key.map(x => finger(x))).size == 3 &&
-        ordered(key)
+        ordered(key) &&
+        (patternQuality(FINGER_CONDITION, key[0], key[1]) && patternQuality(FINGER_CONDITION, key[1], key[2]))
     ) {
         buckets.push('ONE')
     }
@@ -202,7 +241,7 @@ function trigrams(key) {
     return buckets
 }
 
-function quadgrams(key, gram) {
+function quadgrams(key) {
     const buckets = []
 
     if (
@@ -210,7 +249,10 @@ function quadgrams(key, gram) {
         hand(key[1]) == hand(key[3]) &&
         hand(key[0]) != hand(key[1])
     ) {
-        if (new Set(key.map(x => finger(x))).size == 4) {
+        if (
+            new Set(key.map(x => finger(x))).size == 4 &&
+            (patternQuality(FINGER_CONDITION, key[0], key[2]) && patternQuality(FINGER_CONDITION, key[1], key[3]))
+        ) {
             buckets.push('CA')
             buckets.push('SA')
         } else {
@@ -223,20 +265,25 @@ function quadgrams(key, gram) {
         new Set(key.map(x => finger(x))).size == 4 &&
         hand(key[0]) == hand(key[1]) &&
         hand(key[1]) != hand(key[2]) &&
-        hand(key[2]) == hand(key[3])
+        hand(key[2]) == hand(key[3]) &&
+        (patternQuality(FINGER_CONDITION, key[0], key[1]) && patternQuality(FINGER_CONDITION, key[2], key[3]))
     ) {
         buckets.push('CR')
     }
 
     if (
         new Set(key.map(x => hand(x))).size == 2 &&
-        hand(key[0]) != hand(key[1]) && 
-        hand(key[1]) == hand(key[2]) && 
+        hand(key[0]) != hand(key[1]) &&
+        hand(key[1]) == hand(key[2]) &&
         hand(key[2]) != hand(key[3]) &&
-        finger(key[1]) != finger(key[2])
+        finger(key[1]) != finger(key[2]) &&
+        patternQuality(FINGER_CONDITION, key[1], key[2])
     ) {
         buckets.push('TR')
-        if (new Set(key.map(x => finger(x))).size == 4) {
+        if (
+            new Set(key.map(x => finger(x))).size == 4 &&
+            (patternQuality(FINGER_CONDITION, key[0], key[3]) && patternQuality(FINGER_CONDITION, key[1], key[2]))
+        ) {
             buckets.push('BT')
         }
     }
@@ -244,7 +291,8 @@ function quadgrams(key, gram) {
     if (
         new Set(key.map(x => hand(x))).size == 1 &&
         new Set(key.map(x => finger(x))).size == 4 &&
-        ordered(key)
+        ordered(key) &&
+        (patternQuality(FINGER_CONDITION, key[0], key[1]) && patternQuality(FINGER_CONDITION, key[1], key[2]) && patternQuality(FINGER_CONDITION, key[2], key[3]))
     ) {
         buckets.push('4R')
     }

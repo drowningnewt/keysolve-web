@@ -16,14 +16,14 @@ export function init() {
 export function open() {
     const popups = document.getElementById('pop-ups')
     const textarea = document.getElementById('matrix')
-    
+
     let text = ''
     let row = []
 
     const layout = board.layout()
     for (const letter of layout) {
         row.push(letter)
-        
+
         if (row.length == 10) {
             text += row.join(' ') + '\n'
             row = []
@@ -61,4 +61,7 @@ function matrix_change() {
 
     board.set_angle(angle_bool)
     board.update(layout)
+
+    // Fix to make button text update on custom layout change
+    document.getElementById('angleButton').innerHTML = '<i class="fa-solid fa-hands"></i> ' + (board.angle ? 'Angle' : 'Standard')
 }

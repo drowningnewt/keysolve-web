@@ -4,10 +4,16 @@ import * as classify from './classify.mjs'
 
 export let board = 'stagger'
 export let angle = false
+export let fingerCondition = 'None'
 
 export function set_angle(bool) {
     angle = bool
     classify.angle(bool)
+}
+
+export function set_finger_condition(cond) {
+    fingerCondition = cond
+    classify.fingerCondition(cond)
 }
 
 export function layout() {
@@ -18,7 +24,7 @@ export function layout() {
         if (key.classList.contains('empty')) {
             continue
         }
-        
+
         if (key.classList.contains('excluded')) {
             layout += '�'
         } else {
@@ -57,7 +63,7 @@ export function update(layout) {
 
     drag.init()
     disable.init()
-    
+
     window.stats()
 }
 
@@ -76,7 +82,7 @@ export function stagger() {
         } else {
             style = '-10%'
         }
-        
+
         keys[i].style.marginLeft = style
         keys[i].style.marginTop = ''
     }
@@ -123,7 +129,7 @@ export function colstag() {
                 style = '-20%'
                 break
         }
-        
+
         keys[i].style.marginLeft = '0'
         keys[i].style.marginTop = style
     }

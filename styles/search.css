@@ -4,7 +4,7 @@
     margin: 0;
     padding: 0;
     border: none;
-    
+
     background: var(--color-search);
 
     text-align: center;
@@ -12,7 +12,7 @@
     border-top-left-radius: calc(var(--size) * .6);
     border-top-right-radius: calc(var(--size) * .6);
 
-    transition: 
+    transition:
         background-color 300ms,
         filter 100ms;
 }
@@ -34,7 +34,7 @@
     width: 100%;
     height: 100%;
     margin: 0;
-    
+
     color: gray;
 
     font-size: calc(var(--size) * 3);

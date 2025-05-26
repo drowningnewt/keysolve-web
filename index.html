@@ -7,17 +7,17 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
-    
+
     <link rel="stylesheet" href="styles/main.css">
     <link id="theme" rel="stylesheet" href="themes/synthwave.css">
     <script type="module" src="js/main.js"></script>
-    
+
     <link id="repeatmap" rel="stylesheet" href="heatmaps/repeat.css" disabled>
-    
+
     <!-- 3rd party scripts -->
     <script id="DragDropTouch" src="https://bernardo-castilho.github.io/DragDropTouch/DragDropTouch.js"></script>
     <script src="https://kit.fontawesome.com/7cc1d241a9.js" crossorigin="anonymous"></script>
-    
+
     <title>KeySolve</title>
 </head>
 
@@ -125,7 +125,11 @@
             </table>
         </div>
         <div id="toolbar">
-            <button id="statsButton" class="button" onclick="toggle()">
+            <button id="rowConditionButton" class="button" style="width: 140px; text-align: left" onclick="rowCondition()">
+                <i class="fa-solid fa-x"></i>
+                No SRAF
+            </button>
+            <button id="statsButton" class="button" style="width: 120px;  text-align: left" onclick="toggle()">
                 <i class="fa-solid fa-chart-simple"></i>
                 Stats
             </button>
@@ -137,9 +141,13 @@
                 <i class="fa-solid fa-arrows-up-down"></i>
                 Invert
             </button>
-            <button id="boardButton" class="button" onclick="board()">
+            <button id="boardButton" class="button" style="width: 150px;  text-align: left" onclick="board()">
                 <i class="fa-solid fa-keyboard"></i>
                 Stagger
+            </button>
+            <button id="angleButton" class="button" style="width: 160px;  text-align: left"  onclick="angle()">
+                <i class="fa-solid fa-hands"></i>
+                Standard
             </button>
             <button class="button" onclick="settings()">
                 <i class="fa-solid fa-gear"></i>
@@ -161,7 +169,6 @@
                 <div>
                     <select id="themes" name="themes" class="settings-text">
                         <option class="settings-text" selected hidden>Themes</option>
-
                     </select>
                 </div>
             </div>
