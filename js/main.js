@@ -16,8 +16,6 @@ window.onload = async function() {
     settings.init()
     themes.init()
 
-    board.stagger()
-
     base = await (await fetch('percentiles.json')).json()
 
     // Bandaid fix to disable Firefox's quick find shortcut
@@ -196,6 +194,35 @@ window.rowCondition = function() {
     const fmtIcon = iconMap[board.fingerCondition] || '';
     const fmtValue = board.fingerCondition === 'None' ? 'No SRAF' : board.fingerCondition
     button.innerHTML = fmtIcon + fmtValue
+}
+
+window.thumb = function() {
+    board.set_thumb_side(board.thumb_side === 'L' ? 'R' : 'L');
+
+    switch (board.board) {
+        case 'ortho':
+            board.ortho()
+            break
+        case 'colstag':
+            board.colstag()
+            break
+        case 'stagger':
+            board.stagger()
+            break
+    }
+
+    window.stats()
+
+    const button = document.getElementById('thumbButton')
+    const thumbLayout = grid.children.length > 30;
+    const thumbValue = board.thumb_side === 'L' ? 'Left' : 'Right';
+    const thumbIcon = thumbLayout
+        ? (board.thumb_side === 'L'
+            ? '<i class="fa-solid fa-hand-point-left"></i>'
+            : '<i class="fa-solid fa-hand-point-right"></i>')
+        : '<i class="fa-solid fa-x"></i>';
+    const thumbLabel = thumbLayout ? thumbValue : 'N/A';
+    button.innerHTML = `${thumbIcon} Thumb: ${thumbLabel}`;
 }
 
 window.heatmap = function() {

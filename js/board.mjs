@@ -2,9 +2,10 @@ import * as drag from './drag.mjs'
 import * as disable from './disable.mjs'
 import * as classify from './classify.mjs'
 
-export let board = 'stagger'
+export let board = 'ortho'
 export let angle = false
 export let fingerCondition = 'None'
+export let thumb_side = 'R'
 
 export function set_angle(bool) {
     angle = bool
@@ -14,6 +15,11 @@ export function set_angle(bool) {
 export function set_finger_condition(cond) {
     fingerCondition = cond
     classify.fingerCondition(cond)
+}
+
+export function set_thumb_side(side) {
+    thumb_side = side
+    classify.set_thumb(side)
 }
 
 export function layout() {
@@ -67,6 +73,17 @@ export function update(layout) {
     window.stats()
 }
 
+const columnOffsetMap = new Map([
+    [0, '0%'], [9, '0%'],
+    [1, '-25%'], [3, '-25%'], [6, '-25%'], [8, '-25%'],
+    [2, '-50%'], [7, '-50%'],
+    [4, '-20%'], [5, '-20%']
+]);
+
+const rowOffsetMap = new Map([
+    ['L', '-320%'], ['R', '0%']
+]);
+
 export function stagger() {
     const grid = document.getElementById('grid')
     const keys = grid.children
@@ -80,7 +97,7 @@ export function stagger() {
         } else if (i < 30) {
             style =  '30%'
         } else {
-            style = '-10%'
+            style = rowOffsetMap.get(thumb_side) || '0%'
         }
 
         keys[i].style.marginLeft = style
@@ -95,7 +112,7 @@ export function ortho() {
     const keys = grid.children
 
     for (let i=0; i < keys.length; i++) {
-        keys[i].style.marginLeft = ''
+        keys[i].style.marginLeft = (Math.floor(i / 10) > 2) ? rowOffsetMap.get(thumb_side) : '0%';
         keys[i].style.marginTop = ''
     }
 
@@ -107,31 +124,13 @@ export function colstag() {
     const keys = grid.children
 
     for (let i=0; i < keys.length; i++) {
-        let style = ''
+        const key = keys[i];
 
-        switch (i % 10) {
-            case 0:
-            case 9:
-                style = '0%'
-                break
-            case 1:
-            case 3:
-            case 6:
-            case 8:
-                style = '-25%'
-                break
-            case 2:
-            case 7:
-                style = '-50%'
-                break
-            case 4:
-            case 5:
-                style = '-20%'
-                break
-        }
+        const columnIndex = i % 10;
+        const rowIndex = Math.floor(i / 10);
 
-        keys[i].style.marginLeft = '0'
-        keys[i].style.marginTop = style
+        key.style.marginTop = columnOffsetMap.get(columnIndex) || '0%';
+        key.style.marginLeft = rowIndex > 2 ? (rowOffsetMap.get(thumb_side) || '0%') : '';
     }
 
     board = 'colstag'

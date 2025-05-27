@@ -3,24 +3,33 @@ import * as board from './board.mjs'
 export const STANDARD = [
     0, 1, 2, 3, 3, 6, 6, 7, 8, 9,
     0, 1, 2, 3, 3, 6, 6, 7, 8, 9,
-    0, 1, 2, 3, 3, 6, 6, 7, 8, 9,
-    5, 5, 5
+    0, 1, 2, 3, 3, 6, 6, 7, 8, 9
 ]
 
 export const ANGLE = [
     0, 1, 2, 3, 3, 6, 6, 7, 8, 9,
     0, 1, 2, 3, 3, 6, 6, 7, 8, 9,
-    1, 2, 3, 3, 3, 6, 6, 7, 8, 9,
-    5, 5, 5
+    1, 2, 3, 3, 3, 6, 6, 7, 8, 9
 ]
 
-export let FINGER_MAP = STANDARD
+export let THUMBS = [5, 5, 5]
+
+export function set_thumb(side) {
+    if (side === 'L') {
+        THUMBS = [4, 4, 4]
+    } else if (side === 'R') {
+        THUMBS = [5, 5, 5]
+    }
+    FINGER_MAP = [...STANDARD, ...THUMBS]
+}
+
+export let FINGER_MAP = [...STANDARD, ...THUMBS]
 
 export function angle(bool) {
     if (bool) {
-        FINGER_MAP = ANGLE
+        FINGER_MAP = [...ANGLE, ...THUMBS]
     } else {
-        FINGER_MAP = STANDARD
+        FINGER_MAP = [...STANDARD, ...THUMBS]
     }
 }
 
@@ -36,10 +45,7 @@ function column(idx) {
 }
 
 function hand(idx) {
-    if (idx >= 30) {
-        return 1
-    }
-    return (idx % 10 < 5) ? 0 : 1
+    return (finger(idx) < 5) ? 0 : 1
 }
 
 function row(idx) {
@@ -81,7 +87,6 @@ export function classify(key) {
 
 function X(c, r) {
     let sx = c
-    console.log(board.board)
     if (board.board === 'stagger') {
         if (r == 0) {
             sx = c - 0.25
@@ -120,7 +125,8 @@ function bigrams(key) {
     if (
         hand(key[0]) == hand(key[1]) &&
         Math.abs(finger(key[0]) - finger(key[1])) == 1 &&
-        Math.abs(X(column(key[0]), row(key[0])) - X(column(key[1]), row(key[1]))) >= 2
+        Math.abs(X(column(key[0]), row(key[0])) - X(column(key[1]), row(key[1]))) >= 2 &&
+        ![4, 5].includes(finger(key[0])) && ![4, 5].includes(finger(key[1]))
     ) {
         buckets.push('LS')
     }
@@ -159,7 +165,6 @@ function bigrams(key) {
 }
 
 export let FINGER_CONDITION = false
-// Make this accept SR and SRAF
 export function fingerCondition(cond) {
     FINGER_CONDITION = cond
 }
@@ -217,8 +222,6 @@ function trigrams(key) {
     ) {
         buckets.push('ROL')
     }
-
-    console.log(FINGER_CONDITION, patternQuality(FINGER_CONDITION, key[0], key[1]), patternQuality(FINGER_CONDITION, key[1], key[2]))
 
     if (
         new Set(key.map(x => hand(x))).size == 1 &&

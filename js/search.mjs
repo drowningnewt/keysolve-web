@@ -74,6 +74,29 @@ function change() {
     // Bandaid fix since some settings reset on new layout
     document.getElementById('angleButton').innerHTML = '<i class="fa-solid fa-hands"></i> ' + (board.angle ? 'Angle' : 'Standard')
 
+    document.getElementById('boardButton').innerHTML = '<i class="fa-solid fa-keyboard"></i> ' + board.board.charAt(0).toUpperCase() + board.board.slice(1)
+    switch (board.board) {
+        case 'stagger':
+            board.stagger()
+            break
+        case 'ortho':
+            board.ortho()
+            break
+        case 'colstag':
+            board.colstag()
+            break
+        }
+
+    const thumbLayout = grid.children.length > 30;
+    const thumbValue = board.thumb_side === 'L' ? 'Left' : 'Right';
+    const thumbIcon = thumbLayout
+        ? (board.thumb_side === 'L'
+            ? '<i class="fa-solid fa-hand-point-left"></i>'
+            : '<i class="fa-solid fa-hand-point-right"></i>')
+        : '<i class="fa-solid fa-x"></i>';
+    const thumbLabel = thumbLayout ? thumbValue : 'N/A';
+    document.getElementById('thumbButton').innerHTML = `${thumbIcon} Thumb: ${thumbLabel}`;
+
     board.set_finger_condition(board.fingerCondition)
     const iconMap = {
         'None': '<i class="fa-solid fa-x"></i> ',
